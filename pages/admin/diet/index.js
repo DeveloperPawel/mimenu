@@ -6,24 +6,31 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import Card from "../components/IngredientCard";
+import Card from "../../../components/IngredientCard";
 import { Col, Row } from "antd";
 import { Divider } from "antd";
 import { Button } from "antd";
-import DietCollectionPage from "../components/DietCollectionPage";
+import DietCollectionPage from "../../../components/DietCollectionPage";
+import { Context } from "../../../context/index";
+import { useRouter } from "next/router";
 
+//admin diet page
 const index = () => {
   const [dietList, setDietList] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const { Header, Footer, Sider, Content } = Layout;
   const [refresh, setRefresh] = React.useState(true);
 
-  // refresh stale content
-  // React.useEffect(() => {
-  //   if (refresh) {
+  const { state, dispatch } = React.useContext(Context);
+  const { user } = state;
 
-  //   }
-  // }, [refresh])
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (user === null) {
+      router.push("/");
+    }
+  }, [user]);
 
   React.useEffect(async () => {
     await axios.get(`http://localhost:8000/api/getalldiet`).then((response) => {

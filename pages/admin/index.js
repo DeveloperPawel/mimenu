@@ -2,13 +2,24 @@ import React from "react";
 import { Calendar, Badge } from "antd";
 import axios from "axios";
 import { useRouter } from "next/router";
-import DayItemCollectionPage from "../components/DayItemCollectionPage";
+import DayItemCollectionPage from "../../components/DayItemCollectionPage";
+import { Context } from "../../context/index";
 
+//admin calendar page
 const index = () => {
   const [loading, setLoading] = React.useState(true);
   const [dayList, setDayList] = React.useState([]);
 
+  const { state, dispatch } = React.useContext(Context);
+  const { user } = state;
+
   const router = useRouter();
+
+  React.useEffect(() => {
+    if (user === null) {
+      router.push("/");
+    }
+  }, [user]);
 
   React.useEffect(async () => {
     await axios.get("http://localhost:8000/api/getalldays").then((response) => {

@@ -3,9 +3,12 @@ import { Table, Tag, Space } from "antd";
 import axios from "axios";
 import Link from "next/link";
 import { Button, Select, Input } from "antd";
-import PreviewModal from "../components/PreviewModal";
-import CollectionsPage from "../components/CollectionsPage";
+import PreviewModal from "../../components/PreviewModal";
+import CollectionsPage from "../../components/CollectionsPage";
+import { Context } from "../../context/index";
+import { useRouter } from "next/router";
 
+//health provider view
 export default function Home() {
   const { Column, ColumnGroup } = Table;
   const { Option } = Select;
@@ -17,6 +20,10 @@ export default function Home() {
   const [restriction, setRestriction] = React.useState("");
   const [duration, setDuration] = React.useState(false);
   const [endDate, setEndDate] = React.useState("");
+
+  const { state, dispatch } = React.useContext(Context);
+  const { user } = state;
+  const router = useRouter();
 
   const columns = [
     {
@@ -89,6 +96,7 @@ export default function Home() {
           <PreviewModal
             type="qr"
             imageUrl={`http://localhost:3000/login/${record._id}`}
+            link={`${record._id}`}
           />
         );
       },
@@ -112,6 +120,12 @@ export default function Home() {
       ),
     },
   ];
+
+  React.useEffect(() => {
+    if (user === null) {
+      router.push("/");
+    }
+  }, [user]);
 
   React.useEffect(async () => {
     await axios

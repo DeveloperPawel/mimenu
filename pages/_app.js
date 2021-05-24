@@ -2,13 +2,17 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 import Navigation from "../components/Navigation";
+import { Layout } from "antd";
+import { Provider } from "../context/index";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <Navigation />
-      <Component {...pageProps} />
-    </>
+    <Provider>
+      <Layout>
+        <Navigation />
+        <Component {...pageProps} />
+      </Layout>
+    </Provider>
   );
 }
 

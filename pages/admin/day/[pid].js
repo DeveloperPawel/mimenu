@@ -2,12 +2,22 @@ import React from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { Card } from "antd";
+import { Context } from "../../../context/index";
 
 const day = () => {
   const router = useRouter();
   const { pid } = router.query;
   const [day, setDay] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+
+  const { state, dispatch } = React.useContext(Context);
+  const { user } = state;
+
+  React.useEffect(() => {
+    if (user === null) {
+      router.push("/");
+    }
+  }, [user]);
 
   React.useEffect(async () => {
     console.log("pid", pid);
@@ -22,8 +32,7 @@ const day = () => {
   }, []);
 
   if (loading) {
-    console.log(JSON.stringify(day, null, 4));
-    console.log("is array?", Array.isArray(day.menu1));
+    // console.log(JSON.stringify(day, null, 4));
     <p>Loading...</p>;
   }
 

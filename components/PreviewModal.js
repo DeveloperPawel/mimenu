@@ -3,10 +3,12 @@ import { Modal, Button, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import QRCode from "qrcode.react";
 import { Calendar, Badge } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const PreviewModal = (props) => {
   const [visible, setVisible] = React.useState(false);
-
+  const router = useRouter();
   const showModal = () => {
     setVisible(true);
   };
@@ -81,6 +83,10 @@ const PreviewModal = (props) => {
     ) : null;
   }
 
+  function patientLink() {
+    router.push(`/patient/${props.link}`);
+  }
+
   return (
     <>
       <Button type="primary" onClick={showModal}>
@@ -96,9 +102,14 @@ const PreviewModal = (props) => {
         width={props.type === "calendar" ? 1000 : 600}
       >
         {props.type === "qr" ? (
-          <QRCode
-            value="http://facebook.github.io/react/" /** props.imageUrl */
-          />
+          <>
+            <QRCode
+              value="http://facebook.github.io/react/" /** props.imageUrl */
+            />
+            <Button type="link" onClick={patientLink}>
+              Patient Link
+            </Button>
+          </>
         ) : null}
         {props.type === "calendar" ? (
           <Calendar
