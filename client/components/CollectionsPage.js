@@ -27,6 +27,7 @@ const CollectionsPage = () => {
       password: values.password,
       endDate: values.endDate,
       menuOrders: [],
+      restriction: values.restriction,
     };
 
     for (let index = 0; index <= num; index++) {

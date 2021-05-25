@@ -302,7 +302,7 @@ const index = () => {
     let newPatientId;
 
     newPatient.menuOrders.push(newDay);
-    // console.log(`new patient`, JSON.stringify(newPatient, null, 4));
+    console.log(`new patient`, JSON.stringify(newPatient, null, 4));
     await axios
       .post(
         `http://localhost:8000/api/updatepatient/${patient._id}`,

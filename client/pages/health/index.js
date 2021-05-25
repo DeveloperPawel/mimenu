@@ -113,9 +113,14 @@ export default function Home() {
           >
             Update
           </Button>
-          <Link href={`http://localhost:8000/api/deletepatient/${record._id}`}>
-            <a>Delete</a>
-          </Link>
+          <Button
+            type="link"
+            onClick={() => {
+              deletePatient(record._id);
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -128,17 +133,33 @@ export default function Home() {
   }, [user]);
 
   React.useEffect(async () => {
-    await axios
-      .get("http://localhost:8000/api/getallpatients")
-      .then((response) => {
-        setPatientList(response.data);
-      });
-
     await axios.get("http://localhost:8000/api/getalldiet").then((response) => {
       setDietList(response.data);
     });
     setLoading(false);
   }, []);
+
+  React.useEffect(() => {
+    getPatients();
+    const interval = setInterval(() => {
+      getPatients();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const deletePatient = async (id) => {
+    let link = `http://localhost:8000/api/deletepatient/${id}`;
+    await axios.delete(link);
+  };
+
+  const getPatients = async () => {
+    await axios
+      .get("http://localhost:8000/api/getallpatients")
+      .then((response) => {
+        setPatientList(response.data);
+      });
+  };
 
   function handleChange(value) {
     // console.log(`selected ${value}`);

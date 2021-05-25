@@ -1,25 +1,32 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Radio } from "antd";
 import axios from "axios";
-import IngredientCreateForm from "./IngredientCreateForm";
+import MenuItemCreateForm from "./MenuItemCreateForm";
 
-const IngredientsCollectionPage = (props) => {
+const MenuItemCollectionPage = (props) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
-    createIngredient(values);
-    props.func();
+    createMenuItem(values);
     setVisible(false);
   };
 
-  const createIngredient = async (values) => {
-    let ingredient = {
+  const createMenuItem = async (values) => {
+    let menuItem = {
       name: values.name,
+      description: values.description,
+      ingredient: [],
       image: "./image.png",
+      note: "",
     };
-    console.log(JSON.stringify(ingredient, null, 4));
-    await axios.post("http://localhost:8000/api/addingredient", ingredient);
+
+    for (let index = 0; index < values.ingredients.length; index++) {
+      menuItem.ingredient.push(values.ingredients[index]);
+    }
+
+    console.log(JSON.stringify(menuItem, null, 4));
+    await axios.post("http://localhost:8000/api/addmenuitem", menuItem);
   };
 
   return (
@@ -32,7 +39,7 @@ const IngredientsCollectionPage = (props) => {
       >
         Add
       </Button>
-      <IngredientCreateForm
+      <MenuItemCreateForm
         visible={visible}
         onCreate={onCreate}
         onCancel={() => {
@@ -43,4 +50,4 @@ const IngredientsCollectionPage = (props) => {
   );
 };
 
-export default IngredientsCollectionPage;
+export default MenuItemCollectionPage;

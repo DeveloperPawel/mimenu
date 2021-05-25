@@ -88,6 +88,14 @@ const Navigation = () => {
         </Menu.Item>
       ) : null}
 
+      {user !== null && user.role === "Cook" ? (
+        <Menu.Item key="/cook" icon={<HomeOutlined />}>
+          <Link href="/cook">
+            <a>Dashboard</a>
+          </Link>
+        </Menu.Item>
+      ) : null}
+
       {user === null ? (
         <>
           <Menu.Item

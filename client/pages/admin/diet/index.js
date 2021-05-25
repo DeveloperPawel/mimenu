@@ -32,15 +32,21 @@ const index = () => {
     }
   }, [user]);
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    getDiets();
+
+    const interval = setInterval(() => {
+      getDiets();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getDiets = async () => {
     await axios.get(`http://localhost:8000/api/getalldiet`).then((response) => {
       setDietList(response.data);
       setLoading(false);
     });
-  }, []);
-
-  const toggleRefresh = () => {
-    setRefresh(!refresh);
   };
 
   if (loading) {
@@ -58,7 +64,7 @@ const index = () => {
             })}
           </div>
           <Divider />
-          <DietCollectionPage func={toggleRefresh} />
+          <DietCollectionPage />
         </Content>
         <Footer></Footer>
       </Layout>

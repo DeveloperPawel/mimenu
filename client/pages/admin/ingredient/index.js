@@ -19,7 +19,8 @@ const index = () => {
   const [ingredients, setIngredients] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const { Header, Footer, Sider, Content } = Layout;
-  const [refresh, setRefresh] = React.useState(true);
+  const [refresh, setRefresh] = React.useState(false);
+  const [refresh1, setRefresh1] = React.useState("");
 
   const { state, dispatch } = React.useContext(Context);
   const { user } = state;
@@ -32,17 +33,22 @@ const index = () => {
     }
   }, [user]);
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    getIngredients();
+    const interval = setInterval(() => {
+      getIngredients();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getIngredients = async () => {
     await axios
       .get(`http://localhost:8000/api/getallingredients`)
       .then((response) => {
         setIngredients(response.data);
         setLoading(false);
       });
-  }, []);
-
-  const toggleRefresh = () => {
-    setRefresh(!refresh);
   };
 
   if (loading) {
@@ -60,7 +66,7 @@ const index = () => {
             })}
           </div>
           <Divider />
-          <IngredientsCollectionPage func={toggleRefresh} />
+          <IngredientsCollectionPage />
         </Content>
         <Footer></Footer>
       </Layout>

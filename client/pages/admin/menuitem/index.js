@@ -32,17 +32,22 @@ const index = () => {
     }
   }, [user]);
 
-  React.useEffect(async () => {
+  React.useEffect(() => {
+    getMenuItems();
+    const interval = setInterval(() => {
+      getMenuItems();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getMenuItems = async () => {
     await axios
       .get(`http://localhost:8000/api/getallmenuitems`)
       .then((response) => {
         setMenuItems(response.data);
         setLoading(false);
       });
-  }, []);
-
-  const toggleRefresh = () => {
-    setRefresh(!refresh);
   };
 
   if (loading) {
@@ -60,7 +65,7 @@ const index = () => {
             })}
           </div>
           <Divider />
-          <MenuItemCollectionPage func={toggleRefresh} />
+          <MenuItemCollectionPage />
         </Content>
         <Footer></Footer>
       </Layout>

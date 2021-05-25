@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Radio } from "antd";
+import { Button, Modal, Form, Input, Select } from "antd";
 
 const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -45,6 +45,13 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
         <Form.Item name="endDate" label="Date of discharge">
           <Input type="textarea" />
         </Form.Item>
+        {/* <Form.Item name="restriction" label="Restriction">
+          <Select>
+            {diets.map((diet, i) => {
+              <Select.Option value={`${diet.name}`}>{diet.name}</Select.Option>;
+            })}
+          </Select>
+        </Form.Item> */}
       </Form>
     </Modal>
   );

@@ -1,30 +1,24 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Radio } from "antd";
 import axios from "axios";
-import DietCreateForm from "./DietCreateForm";
+import IngredientCreateForm from "./IngredientCreateForm";
 
-const DietCollectionPage = (props) => {
+const IngredientsCollectionPage = (props) => {
   const [visible, setVisible] = useState(false);
 
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
-    createDiet(values);
-    props.func();
+    createIngredient(values);
     setVisible(false);
   };
 
-  const createDiet = async (values) => {
-    let diet = {
+  const createIngredient = async (values) => {
+    let ingredient = {
       name: values.name,
-      ingredient: [],
+      image: "./image.png",
     };
-
-    for (let index = 0; index < values.ingredients.length; index++) {
-      diet.ingredient.push(values.ingredients[index]);
-    }
-
-    console.log(JSON.stringify(diet, null, 4));
-    await axios.post("http://localhost:8000/api/adddiet", diet);
+    console.log(JSON.stringify(ingredient, null, 4));
+    await axios.post("http://localhost:8000/api/addingredient", ingredient);
   };
 
   return (
@@ -37,7 +31,7 @@ const DietCollectionPage = (props) => {
       >
         Add
       </Button>
-      <DietCreateForm
+      <IngredientCreateForm
         visible={visible}
         onCreate={onCreate}
         onCancel={() => {
@@ -48,4 +42,4 @@ const DietCollectionPage = (props) => {
   );
 };
 
-export default DietCollectionPage;
+export default IngredientsCollectionPage;
